@@ -1,0 +1,42 @@
+#usage::::python practice1.py -i sample1.jpg -p pdf/sample.pdf
+
+import numpy as np
+import re
+import pytesseract
+import os
+from PIL import Image
+import cv2
+from pdf2image import convert_from_path
+import pandas as pd
+from collections import namedtuple
+import tabula
+import pandas as pd
+import numpy as np
+import argparse
+import sys
+
+from tabula import read_pdf
+
+pytesseract.pytesseract.tesseract_cmd = 'C:\\Program Files\\Tesseract-OCR\\tesseract.exe'
+
+# construct the argument parser and parse the arguments
+ap = argparse.ArgumentParser()
+ap.add_argument("-i", "--imgpath", help="image path")
+ap.add_argument("-p", "--pdfpath", help="pdf path")
+
+args = vars(ap.parse_args())
+def func(imagepath,pdfpath):
+    path = imagepath
+    image = cv2.imread(path, 0)
+    print(image)
+    print(path)
+    pdf_path = pdfpath
+    list1 = []
+    df1 = tabula.read_pdf(pdf_path, pages='all')
+    for item in df1:
+        for info in item.values:
+            list1.append(info)
+        df1 = pd.DataFrame(list1)
+    
+    
+func(args['imgpath'],args['pdfpath'])
